@@ -1,0 +1,27 @@
+#login {
+	width: 50%;
+	margin: auto;
+  margin-top: 10em;
+
+  form {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+  }
+
+  input {
+    height: 50px;
+    font-size: 1.2em;
+    border: none;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+    padding: 0px 0px 0px 12px;
+  }
+  
+  label {
+    margin: 2em 0 1em 0;
+  }
+}
+
+#login > * {
+	text-align: center;
+}
