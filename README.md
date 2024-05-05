@@ -1,10 +1,27 @@
 # Project 6 - Portfolio-architecte-sophie-bluel
 
-Code du projet 6 d'intégrateur web.
+![Static Badge](https://img.shields.io/badge/Version-1.0.0-1D6154)
 
-![Static Badge](https://img.shields.io/badge/Version-1.0.0-green)
+## Install
 
-## Information pour le lancer le code
+```bash
+git clone https://github.com/HiroFr/OC_Project-6_Portfolio_Architecte_Sophie_Bluel.git
+```
 
- - Lancer le backend depuis votre terminal en suivant les instruction du fichier **readme**.
- - Si vous désirez afficher le code du backend et du frontend, faites le dans 2 instances de VSCode différentes pour éviter tout problème
+## Launch Backend
+
+- Since your terminal, you must install all dependencies before starting the project then start the server.
+
+1. `npm install` or `npm i`
+2. `npm start`
+
+Link for see the [documentation Swagger](http://localhost:5678/api-docs/)
+
+For read the documentation, use your favorite browser.
+
+---
+*Test Account of Sophie Bluel*
+
+> **Email**: sophie.bluel@test.tld
+>
+> **Password**: S0phie
