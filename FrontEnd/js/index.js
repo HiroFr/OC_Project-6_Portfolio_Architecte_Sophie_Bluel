@@ -10,7 +10,7 @@ function loadProjects(selectedCategoryId) {
     .then(res => res.json())
     .then(data => {
       data.forEach(project => {
-        console.log("selectedCategoryId:", selectedCategoryId, "project.categoryId:", project.categoryId);
+        /* console.log("selectedCategoryId:", selectedCategoryId, "project.categoryId:", project.categoryId); */
         if (selectedCategoryId === 0 || project.categoryId === selectedCategoryId) {
           var figure = document.createElement('figure');
           figure.innerHTML = `
@@ -47,8 +47,8 @@ fetch('http://localhost:5678/api/categories')
     document.querySelectorAll('.filter_button').forEach(button => {
       const categoryId = button.dataset.id;
       button.addEventListener('click', function() {
-        console.log(categoryId);
-        loadProjects(categoryId);
+        /* console.log(categoryId); */
+        loadProjects(parseInt(categoryId));
       }); 
     });
 

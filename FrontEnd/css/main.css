@@ -240,9 +240,9 @@ input[type=submit] {
 }
 
 #login {
-  width: 50%;
+  width: 30em;
   margin: auto;
-  margin-top: 10em;
+  margin-top: 5em;
 }
 #login form {
   text-align: left;
@@ -250,14 +250,20 @@ input[type=submit] {
   flex-direction: column;
 }
 #login input {
-  height: 50px;
+  height: 51px;
   font-size: 1.2em;
   border: none;
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
-  padding: 0px 0px 0px 12px;
+  padding: 0px 12px 0px 12px;
 }
 #login label {
   margin: 2em 0 1em 0;
+}
+
+#forgotPassword {
+  text-decoration: underline;
+  text-align: center;
+  margin: 32%;
 }
 
 #login > * {
