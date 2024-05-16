@@ -7,6 +7,9 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+	integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<meta name="description" content="">
 	<link rel="stylesheet" href="../css/main.css">
 </head>
@@ -27,14 +30,20 @@
 <main>
 	<section id="login">
 		<h2>Log in</h2>
-		<form action="#" method="post">
+		<form action="#">
 			<label for="email">Email</label>
-			<input type="email" name="email" id="email">
+			<input type="email" name="email" autocomplete="username" id="email">
 			<label for="password">Mot de passe</label>
-			<input type="password" name="password" id="password">
-			<input type="submit" value="Envoyer">
+			<input type="password" name="password" autocomplete="current-password" id="password">
+			<input type="submit" value="Envoyer" id="submit">
 		</form>
 		<span id="forgotPassword">Mot de passe oublié</span>
+	</section>
+	<section id="error">
+		<div class="errorPassword">
+			<i class="fa-solid fa-xmark"></i>
+			<p id="textError"></p>
+		</div>
 	</section>
 </main>
 
@@ -45,5 +54,6 @@
 		</ul>
 	</nav>
 </footer>
+<script src="../js/login.js"></script>
 </body>
 </html>

@@ -1,4 +1,5 @@
 const galleryContent = document.getElementById("galleryContent");
+const filterContent = document.getElementById("filterContent");
 
 // Fonction pour charger les projets correspondant à la catégorie sélectionnée
 function loadProjects(selectedCategoryId) {
