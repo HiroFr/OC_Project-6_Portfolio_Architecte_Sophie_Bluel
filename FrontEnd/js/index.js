@@ -1,5 +1,7 @@
 const galleryContent = document.getElementById("galleryContent");
 const filterContent = document.getElementById("filterContent");
+const alreadyLogin = document.getElementById('alreadyLogin');
+const body = document.getElementById('body');
 
 // Fonction pour charger les projets correspondant à la catégorie sélectionnée
 function loadProjects(selectedCategoryId) {
@@ -45,11 +47,13 @@ fetch('http://localhost:5678/api/categories')
     });
 
     // Ajout d'un écouteur d'événements à chaque bouton après les avoir créés
-    document.querySelectorAll('.filter_button').forEach(button => {
+    var filterBtn = document.querySelectorAll('.filter_button');
+
+    filterBtn.forEach(button => {
       const categoryId = button.dataset.id;
       button.addEventListener('click', function() {
-        /* console.log(categoryId); */
-        loadProjects(parseInt(categoryId));
+          /* console.log(categoryId); */
+          loadProjects(parseInt(categoryId));
       }); 
     });
 
@@ -57,3 +61,79 @@ fetch('http://localhost:5678/api/categories')
     loadProjects(0);
   })
   .catch(error => console.log('Une erreur est survenue lors du chargement des catégories : ' + error.message));
+
+
+
+// Function qui vérifie si on est connecté + déconnecte lors du click sur logout
+function funcAlreadyLogin() {
+
+  // Créer une balise a pour afficher du texte et un lien
+  var logout = document.createElement('a');
+  logout.href = "./pages/logout.html";
+  logout.innerHTML = "logout";
+  alreadyLogin.innerHTML = '';
+  alreadyLogin.appendChild(logout);
+
+  // EventListener qui supprime le token de la session si on est connecté
+  alreadyLogin.addEventListener('click', function() {
+    sessionStorage.removeItem('token');
+  });
+
+}
+
+// function qui créer et affiche la bannière d'édition si on est connecté
+function bannerLogin() {
+
+  // Créer une div avec comme class banner et l'affiche au top
+  var divB = document.createElement('div');
+  divB.id = 'divBanner';
+  divB.className = "banner";
+  divB.innerHTML = " ";
+  body.insertBefore(divB, body.firstChild);
+
+  const divBanner = document.getElementById('divBanner');
+
+  // Créer une balise i pour afficher l'icone via Font Awesome et l'ajoute à la banner
+  var iconBanner = document.createElement('i');
+  iconBanner.className = "fa-regular fa-pen-to-square";
+  divBanner.appendChild(iconBanner);
+
+  // Créer une balise p pour afficher du texte et l'ajoute à la banner
+  var editionBanner = document.createElement('p');
+  editionBanner.innerHTML = "Mode édition";
+  divBanner.appendChild(editionBanner);
+}
+
+
+// Ouvre et charge les projets dans une modale
+/* function editModal() {
+
+} */
+
+
+function log() {
+
+  if (sessionStorage.getItem('token')) {
+
+    console.log("Connecté, token trouvé !");
+
+    // function qui créer et affiche la bannière d'édition si on est connecté
+    bannerLogin()
+
+    // Cache les filtres quand on est connecté
+    filterContent.style.display = "none";
+
+    // Function qui vérifie si on est connecté + déconnecte lors du click sur logout
+    funcAlreadyLogin()
+
+  } else {
+    console.log("Non connecté, token introuvable !");
+
+    // Cache la div d'édition quand on n'est pas connecté
+    var divEdit = document.getElementById('divEdit');
+    divEdit.style.display = "none";
+
+  }
+}
+
+log();

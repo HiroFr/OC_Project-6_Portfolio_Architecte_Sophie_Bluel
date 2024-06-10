@@ -4,13 +4,16 @@
 
 @import 'base/_typography', 'base/_base';
 
-@import 'components/_modal',
+@import 'components/_edit',
+        'components/_modal',
         'components/_error',
         'components/_filter',
         'components/_footer',
         'components/_navBar',
+        'components/_banner',
         'components/_contact',
         'components/_projects',
-        'components/_introduction';
+        'components/_introduction',
+        'components/_disconnected.scss';
 
 @import 'pages/_home', 'pages/_login';

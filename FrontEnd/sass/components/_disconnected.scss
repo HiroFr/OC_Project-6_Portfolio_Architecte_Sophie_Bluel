@@ -1,0 +1,11 @@
+.disconnected {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+
+  i {
+    font-size: 26px;
+    color: #1D6154;
+  }
+}

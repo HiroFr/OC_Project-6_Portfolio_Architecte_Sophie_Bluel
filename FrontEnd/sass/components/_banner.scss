@@ -1,0 +1,17 @@
+.banner {
+  background-color: #000;
+  height: 59px;
+  max-width: 1440px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  i {
+    color: #fff;
+  }
+
+  p {
+    color: #fff;
+  }
+}

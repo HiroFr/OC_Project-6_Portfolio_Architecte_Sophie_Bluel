@@ -96,6 +96,21 @@ h2 {
   color: #1D6154;
 }
 
+.pojectTitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 31px;
+  margin-top: 8em;
+  margin-bottom: 4em;
+}
+
+.modifier {
+  display: flex;
+  gap: 12px;
+  cursor: pointer;
+}
+
 #error {
   display: flex;
   justify-content: center;
@@ -178,6 +193,22 @@ a {
   width: 20px;
 }
 
+.banner {
+  background-color: #000;
+  height: 59px;
+  max-width: 1440px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.banner i {
+  color: #fff;
+}
+.banner p {
+  color: #fff;
+}
+
 #contact {
   width: 50%;
   margin: auto;
@@ -219,11 +250,6 @@ input[type=submit] {
   border-radius: 60px;
 }
 
-#portfolio h2 {
-  text-align: center;
-  margin-bottom: 1em;
-}
-
 .gallery {
   width: 100%;
   display: grid;
@@ -263,6 +289,17 @@ input[type=submit] {
   margin-bottom: 0.5em;
 }
 
+.disconnected {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+.disconnected i {
+  font-size: 26px;
+  color: #1D6154;
+}
+
 #login {
   width: 30em;
   margin: auto;
@@ -279,6 +316,7 @@ input[type=submit] {
   border: none;
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
   padding: 0px 12px 0px 12px;
+  cursor: pointer;
 }
 #login label {
   margin: 2em 0 1em 0;

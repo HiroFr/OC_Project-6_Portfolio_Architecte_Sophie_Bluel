@@ -1,6 +1,12 @@
 // Fonction pour gérer la soumission du formulaire de connexion
 const submit = document.getElementById('submit');
-const divErrror = document.querySelector(".errorPassword");
+const divError = document.querySelector(".errorPassword");
+const textError = document.getElementById('textError');
+
+function afficherErreur(message) {
+  divError.style.visibility = "visible";
+  textError.innerHTML = message;
+}
 
 function login(event) {
   event.preventDefault(); // Empêche le comportement par défaut du formulaire (soumission)
@@ -8,6 +14,10 @@ function login(event) {
   // Récupérer les valeurs du formulaire
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
+
+  if (!email || !password) {
+    afficherErreur("Les infos ne peut pas être vide.");
+  }
 
   console.log("Récupération des valeurs des Input : " + email, password);
   // Envoyer les données au serveur avec une requête POST
@@ -23,18 +33,14 @@ function login(event) {
       })
   })
   .then(response => {
-    if (response.status == "401") {
-      divErrror.style.visibility = 'visible';
-      var textError = document.getElementById("textError");
-      textError.innerHTML = "Les informations de connexion sont incorrectes";
-      divErrror.appendChild(textError);
-    } else if (response.status !== "401") {
-      divErrror.style.visibility = 'visible';
-      var textError = document.getElementById("textError");
-      textError.innerHTML = `Erreur ${response.status} : ${response.statusText.toString()}`;
+    if (response.status === 200) {
+      // Si le statut est 200, on ne fais rien
+      return response.json();
+    } else if (response.status === 401) {
+      // Si le statut est 401, on affiche un message d'erreur spécifique
+      afficherErreur("Les informations de connexion sont incorrectes");
     }
     console.log(response.status);
-    return response.json();
   })
   .then(data => {
     console.log("Réponse du serveur :", data);
