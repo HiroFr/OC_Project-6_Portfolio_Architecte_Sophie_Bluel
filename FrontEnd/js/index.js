@@ -104,13 +104,6 @@ function bannerLogin() {
   divBanner.appendChild(editionBanner);
 }
 
-
-// Ouvre et charge les projets dans une modale
-/* function editModal() {
-
-} */
-
-
 function log() {
 
   if (sessionStorage.getItem('token')) {

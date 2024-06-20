@@ -1,3 +1,4 @@
+/* --- Error --- */
 /* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
@@ -109,6 +110,109 @@ h2 {
   display: flex;
   gap: 12px;
   cursor: pointer;
+}
+
+.modal {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+.modal::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  opacity: 0.5;
+}
+
+.galeryPictures {
+  background-color: #FFFFFF;
+  margin: 8% auto;
+  padding: 26px 30px 0 30px;
+  border-radius: 16px;
+  width: 630px;
+  height: 688px;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.closeIcon {
+  text-align: end;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.galeryTitle {
+  font-size: 26px;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 52px;
+}
+
+.galeryAllPictures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  row-gap: 2em;
+  padding: 0px 77px;
+}
+.galeryAllPictures figure img {
+  width: 6em;
+}
+
+.separator {
+  height: 1px;
+  width: 34em;
+  margin: 60px auto 0 auto;
+  background-color: #B3B3B3;
+}
+
+.btnAddPicture {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 36px;
+  font-size: 1.2em;
+  border: none;
+  font-family: "Syne";
+  font-weight: 700;
+  color: white;
+  background-color: #1D6154;
+  margin: 2em auto;
+  width: 237px;
+  border-radius: 60px;
+  cursor: pointer;
+}
+
+.image-container {
+  position: relative;
+  display: inline-block;
+}
+
+.image-container img {
+  display: block;
+}
+
+.trash {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: black;
+  color: white;
+  padding: 6px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.trash i {
+  font-size: 18px;
 }
 
 #error {
