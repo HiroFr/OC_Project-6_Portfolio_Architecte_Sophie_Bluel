@@ -6,17 +6,22 @@
 
   .filter_button {
     border-radius: 60px;
-    border: 1px solid #1D6154;
+    border: 1px solid $primary-color;
     padding: 9px 12px;
     font-size: 16px;
     font-weight: 700;
-    color: #1D6154;
-    font-family: "Syne", sans-serif;
+    color: $primary-color;
+    font-family: $font-family-Syne, sans-serif;
     cursor: pointer;
+  }
+
+  .activeFilter {
+    background-color: $primary-color;
+    color: $white-color;
   }
   
   .filter_button:hover {
-    background-color: #1D6154;
-    color: #fff;
+    background-color: $primary-color;
+    color: $white-color;
   }
 }

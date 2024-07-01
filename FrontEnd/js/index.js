@@ -2,6 +2,7 @@ const galleryContent = document.getElementById("galleryContent");
 const filterContent = document.getElementById("filterContent");
 const alreadyLogin = document.getElementById('alreadyLogin');
 const body = document.getElementById('body');
+const token = sessionStorage.getItem('token');
 
 // Fonction pour charger les projets correspondant à la catégorie sélectionnée
 function loadProjects(selectedCategoryId) {
@@ -32,7 +33,7 @@ fetch('http://localhost:5678/api/categories')
   .then(data => {
     // Création du bouton "Tous"
     var allButton = document.createElement('span');
-    allButton.className = "filter_button";
+    allButton.className = "filter_button activeFilter";
     allButton.dataset.id = 0; // Id du bouton "Tous"
     allButton.innerHTML = "Tous";
     filterContent.appendChild(allButton);
@@ -52,6 +53,12 @@ fetch('http://localhost:5678/api/categories')
     filterBtn.forEach(button => {
       const categoryId = button.dataset.id;
       button.addEventListener('click', function() {
+        // Supprimez la classe "active" de tous les boutons
+        filterBtn.forEach(function(btn) {
+          btn.classList.remove('activeFilter');
+        });
+        // Ajoutez la classe "active" au bouton cliqué
+        this.classList.add('activeFilter');
           /* console.log(categoryId); */
           loadProjects(parseInt(categoryId));
       }); 
@@ -106,9 +113,7 @@ function bannerLogin() {
 
 function log() {
 
-  if (sessionStorage.getItem('token')) {
-
-    console.log("Connecté, token trouvé !");
+  if (token) {
 
     // function qui créer et affiche la bannière d'édition si on est connecté
     bannerLogin()
@@ -120,7 +125,6 @@ function log() {
     funcAlreadyLogin()
 
   } else {
-    console.log("Non connecté, token introuvable !");
 
     // Cache la div d'édition quand on n'est pas connecté
     var divEdit = document.getElementById('divEdit');

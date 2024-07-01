@@ -1,17 +1,15 @@
 .banner {
-  background-color: #000;
+  background-color: $black-color;
   height: 59px;
   max-width: 1440px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include flex-center;
   gap: 12px;
 
   i {
-    color: #fff;
+    color: $white-color;
   }
 
   p {
-    color: #fff;
+    color: $white-color;
   }
 }

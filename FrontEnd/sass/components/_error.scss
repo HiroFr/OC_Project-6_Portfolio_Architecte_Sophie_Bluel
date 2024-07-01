@@ -1,23 +1,18 @@
 #error {
   display: flex;
   justify-content: center;
-  margin: 4% auto;
 }
 
 .errorPassword {
   visibility: hidden;
   display: flex;
   align-items: center;
-  padding: 22px;
   width: fit-content;
-  background-color: #FFF8F7;
-  color: #D13415;
-  border: 1px solid #F5A898;
-  border-radius: 14px;
+  color: $error_color;
   font-size: 16px;
   gap: 8px;
 
-  .fa-xmark {
-    color: #D13415;
+  .fa-triangle-exclamation {
+    color: $error_color;
   }
 }

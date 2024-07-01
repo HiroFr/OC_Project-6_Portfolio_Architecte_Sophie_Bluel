@@ -4,9 +4,8 @@
   margin-top: 5em;
 
   form {
+    @include flex-column;
     text-align: left;
-    display: flex;
-    flex-direction: column;
   }
 
   input {

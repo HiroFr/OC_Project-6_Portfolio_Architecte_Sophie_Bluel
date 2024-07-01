@@ -1,4 +1,7 @@
 /* --- Error --- */
+/* --- Essential Color --- */
+/* --- Basic Color --- */
+@import url("https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap");
 /* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
@@ -131,7 +134,9 @@ h2 {
 }
 
 .galeryPictures {
-  background-color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
   margin: 8% auto;
   padding: 26px 30px 0 30px;
   border-radius: 16px;
@@ -139,8 +144,15 @@ h2 {
   height: 688px;
   position: relative;
   z-index: 2;
+}
+
+.headerBtn {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+}
+.headerBtn .backIcon {
+  font-size: 24px;
+  cursor: pointer;
 }
 
 .closeIcon {
@@ -161,7 +173,19 @@ h2 {
   flex-wrap: wrap;
   gap: 1em;
   row-gap: 2em;
-  padding: 0px 77px;
+  padding: 0px 68px;
+  overflow: auto;
+}
+.galeryAllPictures::-webkit-scrollbar {
+  width: 10px;
+}
+.galeryAllPictures::-webkit-scrollbar-thumb {
+  background-color: #1D6154;
+  border-radius: 5px;
+}
+.galeryAllPictures::-webkit-scrollbar-track {
+  background-color: rgba(29, 97, 84, 0.35);
+  border-radius: 5px;
 }
 .galeryAllPictures figure img {
   width: 6em;
@@ -183,12 +207,17 @@ h2 {
   border: none;
   font-family: "Syne";
   font-weight: 700;
-  color: white;
+  color: #fff;
   background-color: #1D6154;
   margin: 2em auto;
   width: 237px;
   border-radius: 60px;
   cursor: pointer;
+}
+
+.disabledInput {
+  background-color: #A7A7A7;
+  cursor: not-allowed;
 }
 
 .image-container {
@@ -204,8 +233,8 @@ h2 {
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: black;
-  color: white;
+  background-color: #000;
+  color: #fff;
   padding: 6px;
   border-radius: 5px;
   cursor: pointer;
@@ -215,27 +244,85 @@ h2 {
   font-size: 18px;
 }
 
+.uploadModal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  padding: 0px 77px;
+}
+.uploadModal .uploadPicture {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #E8F1F6;
+  border-radius: 3px;
+  padding: 19px 0px;
+}
+.uploadModal .uploadPicture .btnUpload {
+  position: relative;
+  display: inline-block;
+}
+.uploadModal .uploadPicture .btnUpload input[type=file] {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.uploadModal .uploadPicture .btnUploadLabel {
+  display: inline-block;
+  color: #306685;
+  border-radius: 20px;
+  text-align: center;
+  padding: 10px 33px;
+  background-color: #CBD6DC;
+  cursor: pointer;
+}
+.uploadModal .uploadPicture .btnUploadLabel:hover {
+  background-color: #c4d0d6;
+}
+.uploadModal .uploadPicture .btnUploadText {
+  padding-top: 7px;
+}
+.uploadModal #nameAddPicture, .uploadModal #nbrCategoryAddPicture {
+  height: 50px;
+  font-size: 1.2em;
+  border: none;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+  padding: 0px 0px 0px 12px;
+}
+
+/* -- displayNone -- */
+.revealUploadPicture {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  background-color: #E8F1F6;
+  border-radius: 3px;
+}
+.revealUploadPicture img {
+  height: 11em;
+}
+
 #error {
   display: flex;
   justify-content: center;
-  margin: 4% auto;
 }
 
 .errorPassword {
   visibility: hidden;
   display: flex;
   align-items: center;
-  padding: 22px;
   width: -moz-fit-content;
   width: fit-content;
-  background-color: #FFF8F7;
   color: #D13415;
-  border: 1px solid #F5A898;
-  border-radius: 14px;
   font-size: 16px;
   gap: 8px;
 }
-.errorPassword .fa-xmark {
+.errorPassword .fa-triangle-exclamation {
   color: #D13415;
 }
 
@@ -255,13 +342,17 @@ h2 {
   font-family: "Syne", sans-serif;
   cursor: pointer;
 }
+.filter .activeFilter {
+  background-color: #1D6154;
+  color: #fff;
+}
 .filter .filter_button:hover {
   background-color: #1D6154;
   color: #fff;
 }
 
 footer {
-  background-color: #FFFFFF;
+  background-color: #fff;
   width: 100%;
   margin-top: auto;
 }
@@ -302,8 +393,8 @@ a {
   height: 59px;
   max-width: 1440px;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   gap: 12px;
 }
 .banner i {
@@ -346,12 +437,13 @@ a {
 input[type=submit] {
   font-family: "Syne";
   font-weight: 700;
-  color: white;
+  color: #fff;
   background-color: #1D6154;
   margin: 2em auto;
   width: 180px;
   text-align: center;
   border-radius: 60px;
+  cursor: pointer;
 }
 
 .gallery {
@@ -410,9 +502,9 @@ input[type=submit] {
   margin-top: 5em;
 }
 #login form {
-  text-align: left;
   display: flex;
   flex-direction: column;
+  text-align: left;
 }
 #login input {
   height: 51px;

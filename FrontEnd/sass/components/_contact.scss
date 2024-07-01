@@ -5,8 +5,7 @@
 	form {
 		text-align: left;
 		margin-top: 30px;
-		display: flex;
-		flex-direction: column;
+		@include flex-column;
 	}
 
 	input {
@@ -35,12 +34,13 @@
 }
 
 input[type="submit"]{
-	font-family: 'Syne';
+	font-family: $font-family-Syne;
 	font-weight: 700;
-	color: white;
-	background-color: #1D6154;
+	color: $white-color;
+	background-color: $primary-color;
 	margin : 2em auto ;
 	width: 180px;
 	text-align: center;
-	border-radius: 60px ;
+	border-radius: 60px;
+	cursor: pointer;
 }

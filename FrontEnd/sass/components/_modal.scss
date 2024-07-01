@@ -12,13 +12,14 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: #000;
+    background-color: $black-color;
     opacity: 0.5;
   }
 }
 
 .galeryPictures {
-  background-color: #FFFFFF;
+  @include flex-column;
+  background-color: $white-color;
   margin: 8% auto;
   padding: 26px 30px 0 30px;
   border-radius: 16px;
@@ -26,8 +27,16 @@
   height: 688px;
   position: relative;
   z-index: 2;
+}
+
+.headerBtn {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+
+  .backIcon {
+    font-size: 24px;
+    cursor: pointer;
+  }
 }
 
 .closeIcon {
@@ -48,7 +57,22 @@
   flex-wrap: wrap;
   gap: 1em;
   row-gap: 2em;
-  padding: 0px 77px;
+  padding: 0px 68px;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: $primary-color;
+    border-radius: 5px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background-color: rgb(29 97 84 / 35%);
+    border-radius: 5px;
+  }
 
   figure {
 
@@ -63,26 +87,28 @@
   height: 1px;
   width: 34em;
   margin: 60px auto 0 auto;
-  background-color: #B3B3B3;
+  background-color: $seperator-color;
 }
 
 .btnAddPicture {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	@include flex-center;
   height: 36px;
   font-size: 1.2em;
   border: none;
-  font-family: 'Syne';
+  font-family: $font-family-Syne;
   font-weight: 700;
-  color: white;
-  background-color: #1D6154;
+  color: $white-color;
+  background-color: $primary-color;
   margin : 2em auto ;
   width: 237px;
   border-radius: 60px ;
   cursor: pointer;
 }
 
+.disabledInput {
+  background-color: $disabled-color;
+  cursor: not-allowed;
+}
 
 .image-container {
   position: relative;
@@ -97,8 +123,8 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: black;
-  color: white;
+  background-color: $black-color;
+  color: $white-color;
   padding: 6px;
   border-radius: 5px;
   cursor: pointer;
@@ -106,4 +132,76 @@
 
 .trash i {
   font-size: 18px;
+}
+
+.uploadModal {
+	@include flex-column;
+  justify-content: center;
+  gap: 12px;
+  padding: 0px 77px;
+
+  .uploadPicture {
+    @include flex-column;
+    align-items: center;
+    background-color: #E8F1F6;
+    border-radius: 3px;
+    padding: 19px 0px;
+
+    .btnUpload {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .btnUpload input[type="file"] {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+    
+    .btnUploadLabel {
+      display: inline-block;
+      color: #306685;
+      border-radius: 20px;
+      text-align: center;
+      padding: 10px 33px;
+      background-color: #CBD6DC;
+      cursor: pointer;
+    }
+    
+    .btnUploadLabel:hover {
+      background-color: #c4d0d6;
+    }
+
+    .btnUploadText {
+      padding-top: 7px;
+    }
+
+  }
+
+  #nameAddPicture, #nbrCategoryAddPicture {
+    height: 50px;
+    font-size: 1.2em;
+    border: none;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+    padding: 0px 0px 0px 12px;
+  }
+}
+
+
+/* -- displayNone -- */
+
+.revealUploadPicture {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  background-color: #E8F1F6;
+  border-radius: 3px;
+
+  img {
+    height: 11em;
+  }
 }

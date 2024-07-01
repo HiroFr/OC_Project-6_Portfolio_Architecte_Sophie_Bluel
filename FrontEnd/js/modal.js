@@ -1,17 +1,49 @@
+const backIcon = document.getElementById('back');
 const modal = document.getElementById('editModal');
-const closeIcon = document.getElementById('close');
+const closeIcons = [
+  document.getElementById('editClose'),
+  document.getElementById('addClose')
+];
+const modalAdd = document.getElementById('addModal');
+const openAddModal = document.getElementById('addBtn');
 const openEditModal = document.getElementById('divEdit');
+const validation = document.getElementById('submitAddPicture');
+
+const divError = document.querySelector(".errorPassword");
+const textError = document.getElementById('textError');
+
+const inputAddPicture = document.getElementById('inputAddPicture');
+const nameAddPicture = document.getElementById('nameAddPicture');
+const nbrCategoryAddPicture = document.getElementById('nbrCategoryAddPicture');
+
+const imageInput = document.getElementById('inputAddPicture'); // files input
+const imageDisplay = document.getElementById('imageDisplay'); // images
+const uploadDiv = document.getElementById('uploadDiv');
+const srcImageDisplay = document.getElementById('srcImageDisplay');
+
+
+function afficherErreur(message) {
+  divError.style.visibility = "visible";
+  textError.innerHTML = message;
+}
 
 // Fermer la modale lorsque l'utilisateur clique en dehors de celle-ci
 window.onclick = function(event) {
   if (event.target == modal) {
     modal.style.display = 'none';
+  } else if (event.target == modalAdd) {
+    modalAdd.style.display = 'none';
   }
 }
 
 // Fermer la modale
 function closeModal() {
   modal.style.display = 'none';
+  modalAdd.style.display = 'none';
+}
+
+function backToEditModal() {
+  modalAdd.style.display = 'none';
 }
 
 async function getWorks() {
@@ -25,25 +57,72 @@ async function getWorks() {
   }
 }
 
-async function editModal() {
-  // On créer une div
-  const galeryPicturesContainer = document.createElement('div');
-  galeryPicturesContainer.className = 'galeryAllPictures';
+async function deletePicture(id) {
   try {
-    // On récupère l'appel API de getWorks
+    const response = await fetch(`http://localhost:5678/api/works/${id}`,
+      { 
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      }  
+    );
+
+    if (!response.ok) {
+      throw new Error("Erreur lors de la suppression de l'image");
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Une erreur est survenue :', error);
+    return false;
+  }
+}
+
+async function editModal() {
+
+  const modal = document.getElementById('editModal');
+  const galeryPicturesContainer = document.getElementById('galeryAllPictures');
+
+  // Nettoyer le contenu de la galerie
+  galeryPicturesContainer.innerHTML = '';
+
+  // On affiche la modale
+  modal.style.display = 'block';
+
+  try {
+    // On récupère les données de l'API
     const works = await getWorks();
-    // Pour chaque projet on assigne une balise figure on y insère le contenu
+
+    // Pour chaque projet, on crée une nouvelle image et l'ajoute au conteneur
     works.forEach(project => {
-      const picture = document.createElement('figure');
-      picture.innerHTML = `
-        <div class="image-container">
-          <img src="${project.imageUrl}">
-          <div id="trashID" class="trash"> // pas besoin d'ID
-            <i class="fa-solid fa-trash-can"></i>
-          </div>
-        </div>
-      `;
-      galeryPicturesContainer.appendChild(picture);
+      const pictureWrapper = document.createElement('figure');
+      pictureWrapper.className = 'image-container';
+      pictureWrapper.setAttribute('data-id', project.id);
+
+      const picture = document.createElement('img');
+      picture.src = `${project.imageUrl}`;
+      picture.alt = `Image for project ${project.id}`;
+
+      const deleteIconWrapper = document.createElement('div');
+      deleteIconWrapper.className = 'trash';
+
+      const deleteIcon = document.createElement('i');
+      deleteIcon.className = 'fa-solid fa-trash-can';
+      deleteIconWrapper.appendChild(deleteIcon);
+
+      deleteIconWrapper.addEventListener('click', async () => {
+        const imageId = project.id;
+        const success = await deletePicture(imageId);
+        if (success) {
+          pictureWrapper.remove();
+        }
+      });
+
+      pictureWrapper.appendChild(picture);
+      pictureWrapper.appendChild(deleteIconWrapper);
+      galeryPicturesContainer.appendChild(pictureWrapper);
     });
   } catch (error) {
     const errorElement = document.createElement('div');
@@ -51,75 +130,129 @@ async function editModal() {
     errorElement.textContent = 'Une erreur est survenue lors du chargement des projets : ' + error.message;
     galeryPicturesContainer.appendChild(errorElement);
   }
-  // revoie le contenu créer précédement avec les balises 
-  return galeryPicturesContainer.outerHTML;
-
 }
 
-async function galeryPicures() {
-  console.log('Je clique dans le contenu menu');
-  // Nettoyer le contenu de la modale
-  modal.innerHTML = '';
-  // On affiche la modale
-  modal.style.display = 'block';
-
-  // Créer le contenu pour la modal d'ajout
-  const galeryPictures = document.createElement('div');
-  galeryPictures.className = 'galeryPictures';
-
-  // Attendre le résultat de editModal puis on l'ajoute dans le contenu
-  const galleryContent = await editModal(); 
-
-  galeryPictures.innerHTML = `
-    <i id="close" class="fa-solid fa-xmark closeIcon"></i>
-    <h3 class="galeryTitle">Galerie Photo</h3>
-    ${galleryContent}
-    <div class="separator"></div>
-    <a class="btnAddPicture">Ajouter une photo</a>
-  `;
-  // Ajouter le contenu à la div modale présent dans le dom
-  modal.appendChild(galeryPictures);
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-const imageContainers = document.querySelectorAll('.image-container');
-// Pour chaque images
-imageContainers.forEach(container => {
-  // On récupère la classe .trash qui correspond à la corbeille
-  const deleteIcon = container.getElementById("trashID");
-  // Lors du click sur la corbeille
-  deleteIcon.addEventListener('click', async () => {
-    console.log('Icon ok');
-    // On récupère l'id associé à l'image
-    const imageId = container.getAttribute('data-id');
-    // On appel la function pour delete l'image en passant l'id en paramètre
-    await deletePicture(imageId);
-    // Puis on delete l'image
-    container.remove();
-  });
-});
-});
-
-async function deletePicture(id) {
-  console.log('Je clique sur la corbeille');
-try {
-  const response = await fetch(`http://localhost:5678/api/works/${id}`, { method: 'DELETE' });
-  if (!response.ok) {
-    throw new Error("Echec de la suppression de l'image");
+// Fonction pour vérifier l'état des champs et changer la couleur du bouton
+function checkFormFields() {
+  if (!inputAddPicture.files[0] || !nameAddPicture.value || !nbrCategoryAddPicture.value) {
+    return true;
+  } else {
+    validation.classList.remove("disabledInput");
+    validation.disabled = false;
   }
-  const result = await response.text();
-  console.log(result);
-} catch (error) {
-  console.error('Une erreur est survenue :', error);
-}
 }
 
+async function postWorks() {
 
-if (openEditModal) {
-  openEditModal.addEventListener("click", galeryPicures);
+  event.preventDefault();
+
+  checkFormFields();
+
+  const formData = new FormData();
+  formData.append("image", inputAddPicture.files[0]);
+  formData.append("title", nameAddPicture.value);
+  formData.append("category", nbrCategoryAddPicture.value);
+
+  try {
+
+    const response = await fetch('http://localhost:5678/api/works',
+      { 
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+        body: formData,
+        redirect: "manual"
+      }
+    );
+    
+    console.log(response);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error status: ${response.status}`);
+    }
+
+  } catch (error) {
+    console.error('Une erreur est survenue :', error.message);
+  }
 }
 
-if (closeIcon) {
-  console.log('Ajout de l\'écouteur d\'événement à l\'icône de fermeture');
-  closeIcon.addEventListener('click', closeModal);
+async function addModal() {
+
+  const modalAdd = document.getElementById('addModal');
+
+  // On affiche la modale
+  modalAdd.style.display = 'block';
+
+  // Reset fields
+  // ----
+    // Reset value input picture
+  inputAddPicture.value = "";
+    // Hide div for display picture
+  imageDisplay.style.display = 'none';
+    // Display div for upload picture
+  uploadDiv.style.display = 'flex';
+    // Add class for disabled input on btn validation
+  validation.classList.add("disabledInput");
+  // Reset value input name
+  nameAddPicture.value = "";
+  
 }
+
+// Ajout d'un gestionnaire d'événements pour le changement de fichier
+imageInput.addEventListener('change', function(event) {
+
+  // Récupération du fichier sélectionné
+  const file = event.target.files[0]; 
+
+  // Vérification qu'un fichier a bien été sélectionné
+  if (file) {
+    // Convertir la taille en Mo
+    const fileSizeInMB = file.size / (1024 * 1024); 
+    const fileType = file.type;
+
+    // Si plus de 4 Mo et si pas le bon type alors erreur
+    if (fileSizeInMB > 4) {
+      afficherErreur(`L'image fait plus de 4 Mo (${fileSizeInMB.toFixed(2)} Mo)`);
+      inputAddPicture.value = "";
+    } else if (fileType !== "image/png" && fileType !== "image/jpeg") {
+      afficherErreur("Le type d'image n'est pas accepté");
+      inputAddPicture.value = "";
+    } else {
+      // Sinon on affiche l'image
+      
+      // Création d'un FileReader
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        // Définition de la source de l'image
+        srcImageDisplay.src = e.target.result;
+        // Affichage de la div pour l'image
+        imageDisplay.style.display = 'flex';
+        // Cache la div d'upload
+        uploadDiv.style.display = 'none';
+      }
+      // Lecture du fichier en tant que Data URL
+      reader.readAsDataURL(file);
+    }
+  }
+});
+
+inputAddPicture.addEventListener('change', checkFormFields);
+nameAddPicture.addEventListener('input', checkFormFields);
+nbrCategoryAddPicture.addEventListener('input', checkFormFields);
+
+validation.addEventListener("click", postWorks);
+
+openAddModal.addEventListener("click", addModal);
+
+openEditModal.addEventListener("click", editModal);
+
+// Attacher le gestionnaire d'événements à chaque élément du tableau
+closeIcons.forEach(icon => {
+  if (icon) { // Assurez-vous que l'élément existe
+    icon.addEventListener("click", closeModal);
+  }
+});
+
+backIcon.addEventListener("click", backToEditModal);

@@ -15,11 +15,10 @@ function login(event) {
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
 
-  if (!email || !password) {
-    afficherErreur("Les infos ne peut pas être vide.");
+  if (!email && !password) {
+    afficherErreur("Les informations ne peuvent pas être vide.");
   }
 
-  console.log("Récupération des valeurs des Input : " + email, password);
   // Envoyer les données au serveur avec une requête POST
   event.preventDefault();
   fetch('http://localhost:5678/api/users/login', {
@@ -33,34 +32,28 @@ function login(event) {
       })
   })
   .then(response => {
+    // Si le statut est 200, on ne fais rien
     if (response.status === 200) {
-      // Si le statut est 200, on ne fais rien
       return response.json();
-    } else if (response.status === 401) {
+
       // Si le statut est 401, on affiche un message d'erreur spécifique
+    } else if (response.status === 401) {
       afficherErreur("Les informations de connexion sont incorrectes");
     }
     console.log(response.status);
   })
   .then(data => {
-    console.log("Réponse du serveur :", data);
     // Token est présent dans la réponse
     if (data.token) {
-        console.log("Token reçu :", data.token);
         // Stocker le token dans le session storage
         sessionStorage.setItem('token', data.token);
         // Rediriger vers la page d'accueil
-        console.log("Redirection vers la page d'accueil");
         window.location.href = '../index.html';
     } else {
-        console.log("Token non trouvé dans la réponse du serveur.");
+      afficherErreur("Une erreur est survenue !");
     }
   })
   .catch(error => console.error('Erreur:', error));
 };
 
 submit.addEventListener('click', login);
-
-
-/* "email": "sophie.bluel@test.tld",
-"password": "S0phie" */
