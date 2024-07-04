@@ -1,3 +1,5 @@
+import {base_URL, loginUser} from "./config.js";
+
 // Fonction pour gérer la soumission du formulaire de connexion
 const submit = document.getElementById('submit');
 const divError = document.querySelector(".errorPassword");
@@ -21,7 +23,7 @@ function login(event) {
 
   // Envoyer les données au serveur avec une requête POST
   event.preventDefault();
-  fetch('http://localhost:5678/api/users/login', {
+  fetch(base_URL + loginUser, {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json'
@@ -45,6 +47,7 @@ function login(event) {
   .then(data => {
     // Token est présent dans la réponse
     if (data.token) {
+      console.log(data.token);
         // Stocker le token dans le session storage
         sessionStorage.setItem('token', data.token);
         // Rediriger vers la page d'accueil

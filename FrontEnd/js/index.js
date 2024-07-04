@@ -1,8 +1,9 @@
+import { token, base_URL, category, works} from "./config.js";
+
 const galleryContent = document.getElementById("galleryContent");
 const filterContent = document.getElementById("filterContent");
 const alreadyLogin = document.getElementById('alreadyLogin');
 const body = document.getElementById('body');
-const token = sessionStorage.getItem('token');
 
 // Fonction pour charger les projets correspondant à la catégorie sélectionnée
 function loadProjects(selectedCategoryId) {
@@ -10,7 +11,7 @@ function loadProjects(selectedCategoryId) {
   galleryContent.innerHTML = '';
 
   // Récupération des projets correspondant en fonction de la catégorie sélectionnée
-  fetch(`http://localhost:5678/api/works`)
+  fetch(base_URL + works)
     .then(res => res.json())
     .then(data => {
       data.forEach(project => {
@@ -28,7 +29,7 @@ function loadProjects(selectedCategoryId) {
 }
 
 // Récupération des catégories et création des boutons de filtre
-fetch('http://localhost:5678/api/categories')
+fetch(base_URL + category)
   .then(res => res.json())
   .then(data => {
     // Création du bouton "Tous"
@@ -112,7 +113,7 @@ function bannerLogin() {
 }
 
 function log() {
-
+  
   if (token) {
 
     // function qui créer et affiche la bannière d'édition si on est connecté

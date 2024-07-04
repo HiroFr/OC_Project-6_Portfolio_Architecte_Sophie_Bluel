@@ -175,6 +175,7 @@ h2 {
   row-gap: 2em;
   padding: 0px 68px;
   overflow: auto;
+  min-height: 28em;
 }
 .galeryAllPictures::-webkit-scrollbar {
   width: 10px;

@@ -1,3 +1,5 @@
+import { token, base_URL, works} from "./config.js";
+
 const backIcon = document.getElementById('back');
 const modal = document.getElementById('editModal');
 const closeIcons = [
@@ -48,7 +50,7 @@ function backToEditModal() {
 
 async function getWorks() {
   try {
-    const response = await fetch(`http://localhost:5678/api/works`);
+    const response = await fetch(base_URL + works);
     const data = await response.json();
     return data;
   } catch (error) {
@@ -59,13 +61,14 @@ async function getWorks() {
 
 async function deletePicture(id) {
   try {
-    const response = await fetch(`http://localhost:5678/api/works/${id}`,
+    const response = await fetch(base_URL + works + `/${id}`,
       { 
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
-        }
+        },
+        redirect: "manual"
       }  
     );
 
@@ -80,7 +83,7 @@ async function deletePicture(id) {
   }
 }
 
-async function editModal() {
+async function editModal(event) {
 
   const modal = document.getElementById('editModal');
   const galeryPicturesContainer = document.getElementById('galeryAllPictures');
@@ -103,7 +106,7 @@ async function editModal() {
 
       const picture = document.createElement('img');
       picture.src = `${project.imageUrl}`;
-      picture.alt = `Image for project ${project.id}`;
+      picture.alt = `Image du projet ${project.id}`;
 
       const deleteIconWrapper = document.createElement('div');
       deleteIconWrapper.className = 'trash';
@@ -113,6 +116,8 @@ async function editModal() {
       deleteIconWrapper.appendChild(deleteIcon);
 
       deleteIconWrapper.addEventListener('click', async () => {
+        event.preventDefault();
+        event.stopPropagation();
         const imageId = project.id;
         const success = await deletePicture(imageId);
         if (success) {
@@ -165,8 +170,6 @@ async function postWorks() {
         redirect: "manual"
       }
     );
-    
-    console.log(response);
 
     if (!response.ok) {
       throw new Error(`HTTP error status: ${response.status}`);
