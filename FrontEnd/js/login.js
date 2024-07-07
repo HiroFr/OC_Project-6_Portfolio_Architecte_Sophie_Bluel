@@ -47,7 +47,6 @@ function login(event) {
   .then(data => {
     // Token est présent dans la réponse
     if (data.token) {
-      console.log(data.token);
         // Stocker le token dans le session storage
         sessionStorage.setItem('token', data.token);
         // Rediriger vers la page d'accueil

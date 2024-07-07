@@ -23,7 +23,7 @@ const imageDisplay = document.getElementById('imageDisplay'); // images
 const uploadDiv = document.getElementById('uploadDiv');
 const srcImageDisplay = document.getElementById('srcImageDisplay');
 
-
+// Affiche un message d'erreur
 function afficherErreur(message) {
   divError.style.visibility = "visible";
   textError.innerHTML = message;
@@ -44,23 +44,83 @@ function closeModal() {
   modalAdd.style.display = 'none';
 }
 
+// Retour à la modal d'édition
 function backToEditModal() {
   modalAdd.style.display = 'none';
 }
 
+// Récupère les projets
 async function getWorks() {
   try {
     const response = await fetch(base_URL + works);
-    const data = await response.json();
-    return data;
+
+    if (response.ok) {
+      const data = await response.json();
+      data.forEach(item => {
+        displayPicture(item.id, item.imageUrl);
+      });
+    } else {
+      console.error("Erreur lors de l'ajout de l'image:", response.statusText);
+    }
   } catch (error) {
     console.log('Une erreur est survenue lors du chargement des projets : ' + error.message);
     throw error;
   }
 }
 
+// Affichage des projets + EventListener pour la suppression
+function displayPicture(id, url) {
+
+  const galery = document.getElementById('galeryAllPictures');
+
+  const container = document.createElement('figure');
+  container.className = 'image-container';
+  container.setAttribute('data-id', id);
+
+  const img = document.createElement('img');
+  img.src = `${url}`;
+  img.alt = `Image du projet ${id}`;
+
+  const deleteIconDiv = document.createElement('div');
+  deleteIconDiv.className = 'trash';
+
+  const deleteIcon = document.createElement('i');
+  deleteIcon.className = 'fa-solid fa-trash-can';
+  deleteIconDiv.appendChild(deleteIcon);
+
+  container.appendChild(img);
+  container.appendChild(deleteIconDiv);
+  galery.appendChild(container);
+
+  deleteIconDiv.addEventListener('click', async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const success = await deletePicture(id);
+    if (success) {
+      container.remove();
+    }
+  });
+}
+
+async function editModal(event) {
+  event.preventDefault();
+  event.stopPropagation();
+
+  const modal = document.getElementById('editModal');
+  const galery = document.getElementById('galeryAllPictures');
+
+  // Nettoyer le contenu de la galerie
+  galery.innerHTML = '';
+
+  // On affiche la modale
+  modal.style.display = 'block';
+
+  await getWorks();  
+}
+
 async function deletePicture(id) {
   try {
+
     const response = await fetch(base_URL + works + `/${id}`,
       { 
         method: 'DELETE',
@@ -83,60 +143,6 @@ async function deletePicture(id) {
   }
 }
 
-async function editModal(event) {
-
-  const modal = document.getElementById('editModal');
-  const galeryPicturesContainer = document.getElementById('galeryAllPictures');
-
-  // Nettoyer le contenu de la galerie
-  galeryPicturesContainer.innerHTML = '';
-
-  // On affiche la modale
-  modal.style.display = 'block';
-
-  try {
-    // On récupère les données de l'API
-    const works = await getWorks();
-
-    // Pour chaque projet, on crée une nouvelle image et l'ajoute au conteneur
-    works.forEach(project => {
-      const pictureWrapper = document.createElement('figure');
-      pictureWrapper.className = 'image-container';
-      pictureWrapper.setAttribute('data-id', project.id);
-
-      const picture = document.createElement('img');
-      picture.src = `${project.imageUrl}`;
-      picture.alt = `Image du projet ${project.id}`;
-
-      const deleteIconWrapper = document.createElement('div');
-      deleteIconWrapper.className = 'trash';
-
-      const deleteIcon = document.createElement('i');
-      deleteIcon.className = 'fa-solid fa-trash-can';
-      deleteIconWrapper.appendChild(deleteIcon);
-
-      deleteIconWrapper.addEventListener('click', async () => {
-        event.preventDefault();
-        event.stopPropagation();
-        const imageId = project.id;
-        const success = await deletePicture(imageId);
-        if (success) {
-          pictureWrapper.remove();
-        }
-      });
-
-      pictureWrapper.appendChild(picture);
-      pictureWrapper.appendChild(deleteIconWrapper);
-      galeryPicturesContainer.appendChild(pictureWrapper);
-    });
-  } catch (error) {
-    const errorElement = document.createElement('div');
-    errorElement.className = 'error';
-    errorElement.textContent = 'Une erreur est survenue lors du chargement des projets : ' + error.message;
-    galeryPicturesContainer.appendChild(errorElement);
-  }
-}
-
 // Fonction pour vérifier l'état des champs et changer la couleur du bouton
 function checkFormFields() {
   if (!inputAddPicture.files[0] || !nameAddPicture.value || !nbrCategoryAddPicture.value) {
@@ -148,8 +154,6 @@ function checkFormFields() {
 }
 
 async function postWorks() {
-
-  event.preventDefault();
 
   checkFormFields();
 
@@ -177,6 +181,7 @@ async function postWorks() {
 
   } catch (error) {
     console.error('Une erreur est survenue :', error.message);
+    return false;
   }
 }
 
