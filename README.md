@@ -33,9 +33,12 @@ For read the documentation, use your favorite browser.
 ---
 ## Launch Frontend
 
-- Open the folder "FrontEnd" and click on "Open with VsCode"
+- Open the folder "FrontEnd" and click on "Open with the Terminal" **(You can use your terminal favorite)**
 
-- Install the extensions "Live Server" then click on "Go Live"
+- Since your terminal, you must install all dependencies before starting the project then start the server.
+
+1. `npm install` or `npm i`
+2. `npm run server`
 
 ---
 *Test Account of Sophie Bluel*
