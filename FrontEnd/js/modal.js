@@ -1,14 +1,15 @@
 import { token, base_URL, works} from "./config.js";
+import { loadProjects } from "./index.js";
 
 const backIcon = document.getElementById('back');
-const modal = document.getElementById('editModal');
+const modalEdit = document.getElementById('editModal');
 const closeIcons = [
   document.getElementById('editClose'),
   document.getElementById('addClose')
 ];
 const modalAdd = document.getElementById('addModal');
-const openAddModal = document.getElementById('addBtn');
-const openEditModal = document.getElementById('divEdit');
+const openAddModal = document.getElementById('openAddModal');
+const openEditModal = document.getElementById('openEditModal');
 const validation = document.getElementById('submitAddPicture');
 
 const divError = document.querySelector(".errorPassword");
@@ -31,8 +32,8 @@ function afficherErreur(message) {
 
 // Fermer la modale lorsque l'utilisateur clique en dehors de celle-ci
 window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = 'none';
+  if (event.target == modalEdit) {
+    modalEdit.style.display = 'none';
   } else if (event.target == modalAdd) {
     modalAdd.style.display = 'none';
   }
@@ -40,32 +41,13 @@ window.onclick = function(event) {
 
 // Fermer la modale
 function closeModal() {
-  modal.style.display = 'none';
+  modalEdit.style.display = 'none';
   modalAdd.style.display = 'none';
 }
 
 // Retour à la modal d'édition
 function backToEditModal() {
   modalAdd.style.display = 'none';
-}
-
-// Récupère les projets
-async function getWorks() {
-  try {
-    const response = await fetch(base_URL + works);
-
-    if (response.ok) {
-      const data = await response.json();
-      data.forEach(item => {
-        displayPicture(item.id, item.imageUrl);
-      });
-    } else {
-      console.error("Erreur lors de l'ajout de l'image:", response.statusText);
-    }
-  } catch (error) {
-    console.log('Une erreur est survenue lors du chargement des projets : ' + error.message);
-    throw error;
-  }
 }
 
 // Affichage des projets + EventListener pour la suppression
@@ -92,30 +74,47 @@ function displayPicture(id, url) {
   container.appendChild(deleteIconDiv);
   galery.appendChild(container);
 
-  deleteIconDiv.addEventListener('click', async (event) => {
-    event.preventDefault();
-    event.stopPropagation();
+  deleteIconDiv.addEventListener('click', async () => {
     const success = await deletePicture(id);
     if (success) {
+      loadProjects(0);
       container.remove();
     }
   });
 }
 
-async function editModal(event) {
-  event.preventDefault();
-  event.stopPropagation();
+// Récupère les projets
+async function getWorks() {
+  try {
+    const response = await fetch(base_URL + works);
 
-  const modal = document.getElementById('editModal');
+    if (response.ok) {
+      const data = await response.json();
+      data.forEach(item => {
+        displayPicture(item.id, item.imageUrl);
+      });
+    } else {
+      console.error("Erreur lors de l'ajout de l'image:", response.statusText);
+    }
+  } catch (error) {
+    console.log('Une erreur est survenue lors du chargement des projets : ' + error.message);
+    throw error;
+  }
+}
+
+async function editModal() {
+
+  const modalEdit = document.getElementById('editModal');
   const galery = document.getElementById('galeryAllPictures');
 
   // Nettoyer le contenu de la galerie
   galery.innerHTML = '';
 
   // On affiche la modale
-  modal.style.display = 'block';
+  modalEdit.style.display = 'block';
 
-  await getWorks();  
+  //Actualise le contenu de la galerie dans la modal d'édition
+  await getWorks();
 }
 
 async function deletePicture(id) {
@@ -127,8 +126,7 @@ async function deletePicture(id) {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
-        },
-        redirect: "manual"
+        }
       }  
     );
 
@@ -164,19 +162,24 @@ async function postWorks() {
 
   try {
 
-    const response = await fetch('http://localhost:5678/api/works',
+    const response = await fetch(base_URL + works,
       { 
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,
         },
-        body: formData,
-        redirect: "manual"
+        body: formData
       }
     );
 
-    if (!response.ok) {
-      throw new Error(`HTTP error status: ${response.status}`);
+    // Si la réponse est valide
+    if (response.ok) {
+      // Ferme les modales
+      closeModal();
+      // Recharge les projets
+      loadProjects(0);
+    } else if (!response.ok) { // Sinon on renvoie une erreur
+      throw new Error(`Erreur HTTP, Satut: ${response.status}`);
     }
 
   } catch (error) {
@@ -211,7 +214,7 @@ async function addModal() {
 imageInput.addEventListener('change', function(event) {
 
   // Récupération du fichier sélectionné
-  const file = event.target.files[0]; 
+  const file = event.target.files[0];
 
   // Vérification qu'un fichier a bien été sélectionné
   if (file) {

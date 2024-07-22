@@ -6,7 +6,7 @@ const alreadyLogin = document.getElementById('alreadyLogin');
 const body = document.getElementById('body');
 
 // Fonction pour charger les projets correspondant à la catégorie sélectionnée
-function loadProjects(selectedCategoryId) {
+export function loadProjects(selectedCategoryId) {
   // Nettoyer le contenu existant avant de charger de nouveaux projets
   galleryContent.innerHTML = '';
 
@@ -128,7 +128,7 @@ function log() {
   } else {
 
     // Cache la div d'édition quand on n'est pas connecté
-    var divEdit = document.getElementById('divEdit');
+    var divEdit = document.getElementById('openEditModal');
     divEdit.style.display = "none";
 
   }

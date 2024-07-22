@@ -1,0 +1,25 @@
+# Ignorer les modules node_modules car nous allons les installer dans le conteneur
+node_modules
+npm-debug.log
+.DS_Store
+
+# Ignorer les fichiers de configuration spécifiques à l'éditeur
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignorer les fichiers temporaires
+*.tmp
+*.log
+
+# Ignorer les répertoires de build locaux
+dist/
+build/
+
+# Ignorer les fichiers de configuration de contrôle de version
+.git
+.gitignore
+
+# Ignorer les fichiers SCSS (puisque nous allons compiler CSS)
+scss/

@@ -1,4 +1,4 @@
-# Project 6 - Portfolio-architecte-sophie-bluel
+# Project 6 - Portfolio Architecte Sophie Bluel
 
 ![Static Badge](https://img.shields.io/badge/Version-1.0.0-1D6154)
 
@@ -9,13 +9,18 @@
 
 ## Requires
 
-> `NodeJS` / `Npm` / `Your terminal` / `Your IDE`
+> `NodeJS` / `Npm` / `Your terminal` / `Your IDE` / `Docker (optional)`
 
-## Install
+## Install 🛠️
 
 ```bash
 git clone https://github.com/HiroFr/OC_Project-6_Portfolio_Architecte_Sophie_Bluel.git
 ```
+
+> ### Warning 💭
+> It's important to follow the instructions in the documentation for launch the project with success.
+
+---
 
 ## Launch Backend
 
@@ -38,10 +43,28 @@ For read the documentation, use your favorite browser.
 - Since your terminal, you must install all dependencies before starting the project then start the server.
 
 1. `npm install` or `npm i`
-2. `npm run server`
+2. `npm run start`
 
 ---
-*Test Account of Sophie Bluel*
+
+## Launch with Docker 🐋
+#### Requires
+- Get docker installed
+
+#### Install
+
+Since the root of your project, you must open an terminal and execute the following commands :
+
+1. `docker compose build` *(Time estimate 2s)*
+2. `docker compose up -d`
+
+Link web : http://localhost:3001
+
+*(You must reload the browser after each change in your files)*
+
+---
+
+#### *Test Account of Sophie Bluel* 💻
 
 > **Email**: sophie.bluel@test.tld
 >
