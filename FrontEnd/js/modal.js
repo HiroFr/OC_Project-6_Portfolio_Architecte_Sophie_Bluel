@@ -24,7 +24,6 @@ const imageDisplay = document.getElementById('imageDisplay'); // images
 const uploadDiv = document.getElementById('uploadDiv');
 const srcImageDisplay = document.getElementById('srcImageDisplay');
 
-// Affiche un message d'erreur
 function afficherErreur(message) {
   divError.style.visibility = "visible";
   textError.innerHTML = message;
@@ -48,6 +47,33 @@ function closeModal() {
 // Retour à la modal d'édition
 function backToEditModal() {
   modalAdd.style.display = 'none';
+}
+
+// ------------- EDITION D'UNE IMAGE ------------- //
+
+// Supprime une image en fonction de son id
+async function deletePicture(id) {
+  try {
+
+    const response = await fetch(base_URL + works + `/${id}`,
+      { 
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      }  
+    );
+
+    if (!response.ok) {
+      throw new Error("Erreur lors de la suppression de l'image");
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Une erreur est survenue :', error);
+    return false;
+  }
 }
 
 // Affichage des projets + EventListener pour la suppression
@@ -117,42 +143,23 @@ async function editModal() {
   await getWorks();
 }
 
-async function deletePicture(id) {
-  try {
 
-    const response = await fetch(base_URL + works + `/${id}`,
-      { 
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      }  
-    );
 
-    if (!response.ok) {
-      throw new Error("Erreur lors de la suppression de l'image");
-    }
-
-    return true;
-  } catch (error) {
-    console.error('Une erreur est survenue :', error);
-    return false;
-  }
-}
+// ------------- AJOUT D'UNE IMAGE ------------- //
 
 // Fonction pour vérifier l'état des champs et changer la couleur du bouton
 function checkFormFields() {
   if (!inputAddPicture.files[0] || !nameAddPicture.value || !nbrCategoryAddPicture.value) {
-    return true;
+    validation.classList.add("disabledInput");
   } else {
     validation.classList.remove("disabledInput");
-    validation.disabled = false;
   }
 }
 
+// Ajouter une image en tant que projet
 async function postWorks() {
 
+  // Vérifie les champs
   checkFormFields();
 
   const formData = new FormData();
@@ -195,20 +202,22 @@ async function addModal() {
   // On affiche la modale
   modalAdd.style.display = 'block';
 
-  // Reset fields
+  // Reset Champs
   // ----
-    // Reset value input picture
+    // Reset la valeur du champ image
   inputAddPicture.value = "";
-    // Hide div for display picture
+    // Cache la div pour afficher l'image
   imageDisplay.style.display = 'none';
-    // Display div for upload picture
+    // Affiche la div pour l'ajout d'une image
   uploadDiv.style.display = 'flex';
-    // Add class for disabled input on btn validation
+    // Ajout de la class  sur le btn de validation
   validation.classList.add("disabledInput");
-  // Reset value input name
+    // Reset la valeur du champ Titre
   nameAddPicture.value = "";
   
 }
+
+
 
 // Ajout d'un gestionnaire d'événements pour le changement de fichier
 imageInput.addEventListener('change', function(event) {
@@ -222,10 +231,11 @@ imageInput.addEventListener('change', function(event) {
     const fileSizeInMB = file.size / (1024 * 1024); 
     const fileType = file.type;
 
-    // Si plus de 4 Mo et si pas le bon type alors erreur
+    // Si plus de 4 Mo
     if (fileSizeInMB > 4) {
       afficherErreur(`L'image fait plus de 4 Mo (${fileSizeInMB.toFixed(2)} Mo)`);
       inputAddPicture.value = "";
+      // Si pas le bon type de fichier
     } else if (fileType !== "image/png" && fileType !== "image/jpeg") {
       afficherErreur("Le type d'image n'est pas accepté");
       inputAddPicture.value = "";
